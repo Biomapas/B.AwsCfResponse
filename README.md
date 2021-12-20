@@ -59,17 +59,22 @@ from b_aws_cf_response.cfresponse import CfResponse
 response = CfResponse(event, context)
 ```
 
-Initiate SUCCESS response in case custom resource provisioning succeeded:
+After successful provision of custom resource, initiate SUCCESS response. The response can include data from the custom resource provider. For example, created resource name.
 
 ```python
+# Custom resource provider defined name-value pairs to send with response.
+custom_resource_data = {
+  'IndexName': 'opensearch-index-name'
+}
+
 response.respond(
   status=CfResponse.CfResponseStatus.SUCCESS,
-  data=some_custom_resource_data,
+  data=custom_resource_data,
   resource_id=custom_resource_id
 )
 ```
 
-Initiate FAILED response in case custom resource provisioning failed:
+Initiate FAILED response if custom resource provisioning failed.
 
 ```python
 response.respond(
